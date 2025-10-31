@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skedul Gabungan Danru & Personil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; padding: 24px; }
+        .document-container {
+            max-width: 100%;
+            margin: 0 auto 40px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .section-separator { border-top: 2px solid #e5e7eb; margin: 30px 0; padding-top: 20px; }
+        .info { margin-bottom: 20px; font-size: 14px; }
+        
+        /* Kontainer Utama Tabel */
+        .table-wrapper {
+            max-height: 70vh; /* Tinggi maksimum untuk scroll vertikal */
+            max-width: 100%;
+            overflow: auto; /* Memungkinkan scroll horizontal dan vertikal */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style Tabel Inti */
+        .schedule-table {
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            min-width: 100%; 
+        }
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #e5e7eb;
+            padding: 8px 6px;
+            text-align: center;
+            white-space: nowrap; 
+        }
+        
+        /* Freeze Panel (Kolom Stiky) */
+        .schedule-table .sticky-info {
+            position: sticky;
+            left: 0;
+            z-index: 5;
+            background-color: #ecfdf5; 
+            font-weight: 600;
+            text-align: left;
+            border-right: 2px solid #34d399; 
+        }
+        
+        /* Freeze Header (Baris Stiky) */
+        .schedule-table thead th {
+            background-color: #1f2937;
+            color: white;
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .schedule-table thead .sticky-info {
+            z-index: 15; 
+            background-color: #065f46; 
+        }
+
+        /* Style per Shift (Danru & Personil) */
+        .shift-p9 { background-color: #c7d2fe; color: #3730a3; font-weight: 600; } /* Danru - Pagi 9h */
+        .shift-p { background-color: #bfdbfe; color: #1e40af; font-weight: 600; } /* Personil - Pagi 12h */
+        .shift-m { background-color: #d1d5db; color: #374151; font-weight: 600; } /* Personil - Malam 12h */
+        .shift-p8 { background-color: #a7f3d0; color: #065f46; font-weight: 600; } /* Personil - Pagi 8h */
+        .shift-s8 { background-color: #fef08a; color: #b45309; font-weight: 600; } /* Personil - Siang 8h */
+        .shift-m8 { background-color: #dbeafe; color: #1e3a8a; font-weight: 600; } /* Personil - Malam 8h */
+        .shift-off { background-color: #fecaca; color: #b91c1c; font-weight: 700; } /* OFF (Global) */
+        
+        .col-nama { min-width: 180px; }
+        .col-nip { min-width: 100px; }
+        .col-nomor { min-width: 60px; }
+
+    </style>
+</head>
+<body>
+
+<!-- ============================================== -->
+<!-- SECTION 1: SKEDUL DANRU (2 Personil) -->
+<!-- ============================================== -->
+<div class="document-container">
+    <h1 class="text-2xl font-bold mb-4 text-gray-800">Skedul DANRU (2 Orang) - Freeze Panel</h1>
+    <p class="info text-gray-600">Jadwal Penjagaan DANRU (Achmad & Bachtiar) 24 Okt 2025 s/d 24 Okt 2026. Kolom NIP dan Nama akan **terkunci (freeze)**.</p>
+    
+    <div class="table-wrapper">
+        <table id="scheduleDanruTable" class="schedule-table">
+            <thead id="scheduleDanruHeader">
+                <tr>
+                    <th class="sticky-info col-nomor">NOMOR</th>
+                    <th class="sticky-info col-nip">NIP</th>
+                    <th class="sticky-info col-nama">NAMA</th>
+                </tr>
+                <tr id="dayDanruRow" class="text-xs">
+                    <td class="sticky-info" colspan="3">Hari</td>
+                </tr>
+            </thead>
+            <tbody id="scheduleDanruBody">
+                <!-- Baris Karyawan akan diisi oleh JS -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<!-- Pemisah Antar Skedul -->
+<div class="section-separator"></div>
+
+<!-- ============================================== -->
+<!-- SECTION 2: SKEDUL PERSONIL (7 Personil) -->
+<!-- ============================================== -->
+<div class="document-container">
+    <h1 class="text-2xl font-bold mb-4 text-gray-800">Skedul PERSONIL (7 Orang) - Freeze Panel</h1>
+    <p class="info text-gray-600">Jadwal Penjagaan PERSONIL (7 Orang) 31 Okt 2025 s/d 31 Okt 2026. Kolom NIP dan Nama akan **terkunci (freeze)**.</p>
+    
+    <div class="table-wrapper">
+        <table id="schedulePersonilTable" class="schedule-table">
+            <thead id="schedulePersonilHeader">
+                <tr>
+                    <th class="sticky-info col-nomor">NOMOR</th>
+                    <th class="sticky-info col-nip">NIP</th>
+                    <th class="sticky-info col-nama">NAMA</th>
+                </tr>
+                <tr id="dayPersonilRow" class="text-xs">
+                    <td class="sticky-info" colspan="3">Hari</td>
+                </tr>
+            </thead>
+            <tbody id="schedulePersonilBody">
+                <!-- Baris Karyawan akan diisi oleh JS -->
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+
+        /**
+         * Menghitung perbedaan hari (days)
+         */
+        function dateDiffInDays(date1, date2) {
+            const oneDay = 1000 * 60 * 60 * 24;
+            // Menggunakan UTC untuk konsistensi perhitungan hari
+            const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+            const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+            return Math.floor((utc1 - utc2) / oneDay);
+        }
+
+        // ==============================================
+        // LOGIKA SKEDUL DANRU
+        // ==============================================
+
+        const DANRU_START_DATE = new Date('October 24, 2025');
+        const DANRU_END_DATE = new Date('October 24, 2026');
+        const DANRU_CYCLE_START_DATE = new Date('October 24, 2025'); // Hari Siklus 1 (16 hari)
+
+        // Pola shift 16-hari untuk Danru
+        const DANRU_PATTERNS = [
+            // Achmad Prihanto (Siklus 16)
+            ["P9", "P9", "OFF", "OFF", "P9", "P9", "OFF", "OFF", "P9", "P9", "OFF", "OFF", "P9", "P9", "OFF", "OFF"],
+            // Bachtiar (Siklus 16)
+            ["OFF", "OFF", "P9", "P9", "OFF", "OFF", "P9", "P9", "OFF", "OFF", "P9", "P9", "OFF", "OFF", "P9", "P9"]
+        ];
+        
+        const DANRU_DATA = [
+            { no: 1, nip: '01007583', nama: 'Achmad Prihanto', pattern: DANRU_PATTERNS[0], shifts: [] },
+            { no: 2, nip: '01009062', nama: 'Bachtiar', pattern: DANRU_PATTERNS[1], shifts: [] }
+        ];
+
+        function getDanruCycleIndex(date) {
+            const diffDays = dateDiffInDays(date, DANRU_CYCLE_START_DATE);
+            return (diffDays % 16 + 16) % 16; // Siklus 16 hari
+        }
+
+        function generateDanruSchedule() {
+            let currentDate = new Date(DANRU_START_DATE);
+            const dateHeaders = [];
+            const dayNames = [];
+            
+            while (currentDate <= DANRU_END_DATE) {
+                const cycleIndex = getDanruCycleIndex(currentDate);
+
+                // Format Tanggal Excel: DD/MM/YY (Contoh: 31/10/25)
+                const dateString = currentDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: '2-digit' });
+                const dayName = days[currentDate.getDay()];
+                
+                dateHeaders.push(dateString);
+                dayNames.push(dayName);
+
+                DANRU_DATA.forEach(danru => {
+                    danru.shifts.push(danru.pattern[cycleIndex]);
+                });
+
+                const nextDate = new Date(currentDate);
+                nextDate.setDate(currentDate.getDate() + 1);
+                currentDate = nextDate;
+            }
+            renderDanruTable(dateHeaders, dayNames);
+        }
+
+        function renderDanruTable(dateHeaders, dayNames) {
+            const headerRow = document.querySelector('#scheduleDanruTable thead tr:first-child');
+            const dayRow = document.getElementById('dayDanruRow');
+            const body = document.getElementById('scheduleDanruBody');
+
+            // 1. Render Header Tanggal
+            dateHeaders.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+
+            // 2. Render Baris Hari
+            dayNames.forEach(day => {
+                const td = document.createElement('td');
+                td.textContent = day;
+                dayRow.appendChild(td);
+            });
+
+            // 3. Render Data Karyawan
+            DANRU_DATA.forEach(data => {
+                const row = document.createElement('tr');
+
+                let cell = row.insertCell(); cell.textContent = data.no; cell.classList.add('sticky-info', 'col-nomor');
+                cell = row.insertCell(); cell.textContent = data.nip; cell.classList.add('sticky-info', 'col-nip');
+                cell = row.insertCell(); cell.textContent = data.nama; cell.classList.add('sticky-info', 'col-nama');
+                
+                data.shifts.forEach(shift => {
+                    cell = row.insertCell();
+                    cell.textContent = shift;
+                    cell.classList.add(`shift-${shift.toLowerCase()}`);
+                });
+                body.appendChild(row);
+            });
+        }
+        
+        // ==============================================
+        // LOGIKA SKEDUL PERSONIL
+        // ==============================================
+
+        const PERSONIL_START_DATE = new Date('October 31, 2025');
+        const PERSONIL_END_DATE = new Date('October 31, 2026');
+        const PERSONIL_CYCLE_START_DATE = new Date('October 24, 2025'); // Hari Siklus 1 (21 hari)
+
+        // Pola shift 21-hari untuk Personil
+        const PERSONIL_PATTERNS = [
+            ["OFF", "M8", "M8", "M8", "M8", "OFF", "P8", "S8", "M8", "M", "OFF", "S8", "S8", "S8", "S8", "OFF", "P8", "P8", "P8", "P8", "P8"],
+            ["P", "P8", "P8", "OFF", "M8", "M8", "M8", "M8", "OFF", "P8", "S8", "M8", "M", "OFF", "S8", "S8", "S8", "S8", "P", "P8", "P8"], 
+            ["OFF", "P8", "P8", "P", "P8", "P8", "OFF", "M8", "M8", "M8", "M8", "OFF", "P8", "S8", "M8", "M", "OFF", "S8", "S8", "S8", "S8"], 
+            ["S8", "S8", "S8", "OFF", "P8", "P8", "P", "P8", "P8", "OFF", "M8", "M8", "M8", "M8", "OFF", "P8", "S8", "M8", "M", "OFF", "P8"], 
+            ["M", "OFF", "S8", "S8", "S8", "S8", "OFF", "P8", "P8", "P", "P8", "P8", "OFF", "M8", "M8", "M8", "M8", "OFF", "P8", "S8", "M8"], 
+            ["P8", "S8", "M8", "M", "OFF", "S8", "S8", "S8", "S8", "OFF", "P8", "P8", "P", "P8", "P8", "OFF", "M8", "M8", "M8", "M8", "OFF"],
+            ["M8", "M8", "OFF", "P8", "S8", "M8", "M", "OFF", "S8", "S8", "S8", "S8", "OFF", "P8", "P8", "P", "P8", "P8", "OFF", "M8", "M8"] 
+        ];
+
+        const PERSONIL_DATA = [
+            { no: 1, nip: '01009530', nama: 'Nur Wahyudin', pattern: PERSONIL_PATTERNS[0], shifts: [] },
+            { no: 2, nip: '01009051', nama: 'Hery', pattern: PERSONIL_PATTERNS[1], shifts: [] },
+            { no: 3, nip: '01009516', nama: 'Riyansyah Rino Mansur', pattern: PERSONIL_PATTERNS[2], shifts: [] },
+            { no: 4, nip: '01009538', nama: 'Rizky Nandyansyah', pattern: PERSONIL_PATTERNS[3], shifts: [] },
+            { no: 5, nip: '01008955', nama: 'Yanto Risyadi', pattern: PERSONIL_PATTERNS[4], shifts: [] },
+            { no: 6, nip: '01009510', nama: 'Andi Pratama', pattern: PERSONIL_PATTERNS[5], shifts: [] },
+            { no: 7, nip: '01009520', nama: 'M. Zikri', pattern: PERSONIL_PATTERNS[6], shifts: [] }
+        ];
+
+        function getPersonilCycleIndex(date) {
+            const diffDays = dateDiffInDays(date, PERSONIL_CYCLE_START_DATE);
+            return (diffDays % 21 + 21) % 21; // Siklus 21 hari
+        }
+
+        function generatePersonilSchedule() {
+            let currentDate = new Date(PERSONIL_START_DATE);
+            const dateHeaders = [];
+            const dayNames = [];
+            
+            while (currentDate <= PERSONIL_END_DATE) {
+                const cycleIndex = getPersonilCycleIndex(currentDate);
+
+                // Format Tanggal Excel: DD/MM/YY (Contoh: 31/10/25)
+                const dateString = currentDate.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: '2-digit' });
+                const dayName = days[currentDate.getDay()];
+                
+                dateHeaders.push(dateString);
+                dayNames.push(dayName);
+
+                PERSONIL_DATA.forEach(personil => {
+                    personil.shifts.push(personil.pattern[cycleIndex]);
+                });
+
+                const nextDate = new Date(currentDate);
+                nextDate.setDate(currentDate.getDate() + 1);
+                currentDate = nextDate;
+            }
+            renderPersonilTable(dateHeaders, dayNames);
+        }
+
+        function renderPersonilTable(dateHeaders, dayNames) {
+            const headerRow = document.querySelector('#schedulePersonilTable thead tr:first-child');
+            const dayRow = document.getElementById('dayPersonilRow');
+            const body = document.getElementById('schedulePersonilBody');
+
+            // 1. Render Header Tanggal
+            dateHeaders.forEach(header => {
+                const th = document.createElement('th');
+                th.textContent = header;
+                headerRow.appendChild(th);
+            });
+
+            // 2. Render Baris Hari
+            dayNames.forEach(day => {
+                const td = document.createElement('td');
+                td.textContent = day;
+                dayRow.appendChild(td);
+            });
+
+            // 3. Render Data Karyawan
+            PERSONIL_DATA.forEach(data => {
+                const row = document.createElement('tr');
+
+                let cell = row.insertCell(); cell.textContent = data.no; cell.classList.add('sticky-info', 'col-nomor');
+                cell = row.insertCell(); cell.textContent = data.nip; cell.classList.add('sticky-info', 'col-nip');
+                cell = row.insertCell(); cell.textContent = data.nama; cell.classList.add('sticky-info', 'col-nama');
+                
+                data.shifts.forEach(shift => {
+                    cell = row.insertCell();
+                    cell.textContent = shift;
+                    cell.classList.add(`shift-${shift.toLowerCase()}`);
+                });
+                body.appendChild(row);
+            });
+        }
+
+        // --- Inisialisasi Kedua Skedul ---
+        generateDanruSchedule();
+        generatePersonilSchedule();
+    });
+</script>
+
+</body>
+</html>
